@@ -27,25 +27,36 @@ void ADoor::Tick(float DeltaTime)
 
 	//AddActorLocalRotation(FRotator(0.0f, 1.0f, 0.0f)); WORK
 
-	if (!bDoorOpen)
+	if (bDoorOpening)
 	{
 		OpenDoor(DeltaTime);
+	}
+	if (bDoorClosing)
+	{
+		CloseDoor(DeltaTime);
 	}
 }
 
 void ADoor::OpenDoor(float DeltaTime)
 {
-	//FVector OpenDirection = GetActorRightVector() * DeltaTime * 20.0f;
-	//AddActorLocalOffset(OpenDirection);
-	//AddActorLocalRotation(FRotator(0.0f, 20.0f * DeltaTime, 0.0f));
-	//if (GetActorLocation() >= InitalLocation + GetActorForwardVector() * DoorWidth)
-
-	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorOpenedYaw, DeltaTime * DoorOpenSpeed);
+	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorOpenedYaw, DeltaTime * DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
 	DoorRotation.Yaw = DoorCurrentYaw;
 	SetActorRotation(DoorRotation);
-	if (DoorCurrentYaw == DoorOpenedYaw)
+	if (FMath::IsNearlyEqual(DoorCurrentYaw, DoorOpenedYaw, 0.5f))
 	{
-		bDoorOpen = true;
+		bDoorOpening = false;
+	}
+}
+
+void ADoor::CloseDoor(float DeltaTime)
+{
+	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorClosedYaw, DeltaTime * DoorOpenCloseSpeed);
+	FRotator DoorRotation = GetActorRotation();
+	DoorRotation.Yaw = DoorCurrentYaw;
+	SetActorRotation(DoorRotation);
+	if (FMath::IsNearlyEqual(DoorCurrentYaw, DoorClosedYaw, 0.5f))
+	{
+		bDoorClosing = false;
 	}
 }

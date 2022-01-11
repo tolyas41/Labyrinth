@@ -27,11 +27,13 @@ public:
 
 	UFUNCTION()
 	void OpenDoor(float DeltaTime);
+	UFUNCTION()
+	void CloseDoor(float DeltaTime);
 
 	UPROPERTY(EditAnywhere)
-	const float DoorOpenSpeed = 10.0f;
-	bool bDoorOpen = false;
-	bool bDoorClosed = false;
+	float DoorOpenCloseSpeed = 10.0f;
+	bool bDoorOpening = false;
+	bool bDoorClosing = false;
 
 private:
 	float DoorClosedYaw;
