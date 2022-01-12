@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Door.h"
+#include "RoomTrigger.h"
 
 ALabyrinthCharacter::ALabyrinthCharacter()
 {
@@ -40,7 +41,8 @@ ALabyrinthCharacter::ALabyrinthCharacter()
 	//DoorOpenBoundsChecker->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	//DoorOpenBoundsChecker->SetCollisionProfileName(UCollisionProfile::)
 
-
+	TriggerRoom = nullptr;
+	DoorToOpen = nullptr;
 }
 
 void ALabyrinthCharacter::BeginPlay()
@@ -105,18 +107,33 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 {
 	if (DoorToOpen)
 	{
+		for (ADoor* door : TriggerRoom->Doors)
+		{
+			door->bDoorClosing = true;
+		}
 		DoorToOpen->bDoorOpening = true;
 	}
 }
 
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	DoorToOpen = Cast<ADoor>(OtherActor);
+	if (DoorToOpen == nullptr)
+	{
+		DoorToOpen = Cast<ADoor>(OtherActor);
+	}
+	//if (OtherActor->GetClass() == ARoomTrigger::StaticClass())
+	//{
+	//	TriggerRoom = Cast<ARoomTrigger>(OtherActor);
+	//	UE_LOG(LogTemp, Warning, TEXT("%s"), *TriggerRoom->GetName() );
+
+	//}
 }
 
 void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	DoorToOpen = nullptr;
+	//if (OtherActor->StaticClass() == ARoomTrigger::StaticClass())
+	//TriggerRoom = nullptr;
 }
 
 //void ALabyrinthCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const

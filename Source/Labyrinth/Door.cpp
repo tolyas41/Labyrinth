@@ -19,6 +19,7 @@ void ADoor::BeginPlay()
 	Super::BeginPlay();
 	DoorClosedRoll = GetActorRotation().Roll;
 	DoorOpenedRoll = DoorClosedRoll + 90.0f;
+	AddActorLocalOffset(FVector(0.01f, 0.0f, 0.0f));
 }
 
 void ADoor::Tick(float DeltaTime)

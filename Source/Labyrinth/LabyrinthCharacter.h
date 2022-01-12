@@ -7,6 +7,7 @@
 #include "LabyrinthCharacter.generated.h"
 
 class ADoor;
+class ARoomTrigger;
 
 UCLASS(config=Game)
 class ALabyrinthCharacter : public ACharacter
@@ -32,6 +33,7 @@ public:
 
 	//UPROPERTY(Replicated)
 	ADoor* DoorToOpen;
+	ARoomTrigger* TriggerRoom;
 
 	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
