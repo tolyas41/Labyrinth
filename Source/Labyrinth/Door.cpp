@@ -3,6 +3,7 @@
 
 #include "Door.h"
 #include "Components/StaticMeshComponent.h"
+#include "Net/UnrealNetwork.h"
 
 ADoor::ADoor()
 {
@@ -18,18 +19,15 @@ void ADoor::BeginPlay()
 	Super::BeginPlay();
 	DoorClosedYaw = GetActorRotation().Yaw;
 	DoorOpenedYaw = DoorClosedYaw + 90.0f;
-	//DoorWidth = StaticMesh->CalcBounds()
 }
 
 void ADoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//AddActorLocalRotation(FRotator(0.0f, 1.0f, 0.0f)); WORK
-
 	if (bDoorOpening)
 	{
-		OpenDoor(DeltaTime);
+		OnRep_DoorOpening(true);
 	}
 	if (bDoorClosing)
 	{
@@ -59,4 +57,16 @@ void ADoor::CloseDoor(float DeltaTime)
 	{
 		bDoorClosing = false;
 	}
+}
+
+void ADoor::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ADoor, bDoorOpening);
+}
+
+void ADoor::OnRep_DoorOpening(bool b)
+{
+	OpenDoor(0.01f);
 }

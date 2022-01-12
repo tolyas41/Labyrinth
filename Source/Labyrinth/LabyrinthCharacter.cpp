@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Door.h"
 
 ALabyrinthCharacter::ALabyrinthCharacter()
@@ -34,6 +35,8 @@ ALabyrinthCharacter::ALabyrinthCharacter()
 	FollowCamera->bUsePawnControlRotation = false;
 
 	DoorOpenBoundsChecker = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorOpenBoundsChecker"));
+	DoorOpenBoundsChecker->SetupAttachment(RootComponent);
+	//DoorOpenBoundsChecker->SetRelativeLocation(RootComponent->GetComponentLocation());
 	//DoorOpenBoundsChecker->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	//DoorOpenBoundsChecker->SetCollisionProfileName(UCollisionProfile::)
 
@@ -43,6 +46,7 @@ ALabyrinthCharacter::ALabyrinthCharacter()
 void ALabyrinthCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	DoorOpenBoundsChecker->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	DoorOpenBoundsChecker->OnComponentBeginOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapBegin);
 	DoorOpenBoundsChecker->OnComponentEndOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapEnd);
 }
@@ -108,9 +112,11 @@ void ALabyrinthCharacter::OpenDoor()
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	DoorToOpen = Cast<ADoor>(OtherActor);
+	UE_LOG(LogTemp, Warning, TEXT("Overlap %s"), *(OtherActor->GetName()));
 }
 
 void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	DoorToOpen = nullptr;
+	UE_LOG(LogTemp, Warning, TEXT("Overlap ends"));
 }

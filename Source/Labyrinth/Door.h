@@ -25,6 +25,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
 
+	//UFUNCTION(NetMulticast, Unreliable)
 	UFUNCTION()
 	void OpenDoor(float DeltaTime);
 	UFUNCTION()
@@ -32,8 +33,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpenCloseSpeed = 10.0f;
+	UPROPERTY(ReplicatedUsing = OnRep_DoorOpening)
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UFUNCTION()
+	void OnRep_DoorOpening(bool b);
 
 private:
 	float DoorClosedYaw;
