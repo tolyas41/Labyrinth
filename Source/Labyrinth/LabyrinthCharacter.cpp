@@ -112,6 +112,7 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 			door->bDoorClosing = true;
 		}
 		DoorToOpen->bDoorOpening = true;
+		DoorToOpen->bDoorClosing = false;
 	}
 }
 

@@ -6,46 +6,34 @@
 #include "Components/StaticMeshComponent.h"
 #include "LabyrinthCharacter.h"
 
-ARoomTrigger::ARoomTrigger()
-{
-	//StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Room Mesh"));
-	//RootComponent = StaticMesh;
-	//StaticMesh->SetVisibility(false);
-}
+//ARoomTrigger::ARoomTrigger()
+//{
+//}
 
 void ARoomTrigger::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	OnActorBeginOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapBegin);
+	OnActorEndOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapEnd);
 }
-
-//void ARoomTrigger::BeginPlay()
-//{
-//	Super::BeginPlay();
-//	//StaticMesh->OnComponentBeginOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapBegin);
-//	//(FActorBeginOverlapSignature, AActor, OnActorBeginOverlap, AActor*, OverlappedActor, AActor*, OtherActor);
-//
-//	//GetCollisionComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapBegin);
-//}
 
 void ARoomTrigger::OnOverlapBegin(class AActor* OverlappedActor, class AActor* OtherActor)
 {
-	//ADoor* DoorInRoom = Cast<ADoor>(OtherActor);
-	//if (DoorInRoom)
-	//{
-	//	Doors.Add(DoorInRoom);
-	//	UE_LOG(LogTemp, Warning, TEXT("%s"), *DoorInRoom->GetName());
-
-	//}
-	for (ADoor* door : Doors)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *door->GetName());
-	}
-
 	ALabyrinthCharacter* Character = Cast<ALabyrinthCharacter>(OtherActor);
 	if (Character)
 	{
 		Character->TriggerRoom = this;
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Character->GetName());
+
+	}
+}
+
+void ARoomTrigger::OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor)
+{
+	ALabyrinthCharacter* Character = Cast<ALabyrinthCharacter>(OtherActor);
+	if (Character)
+	{
+		Character->TriggerRoom = nullptr;
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *Character->GetName());
 
 	}

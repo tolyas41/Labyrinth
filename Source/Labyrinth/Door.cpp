@@ -19,7 +19,6 @@ void ADoor::BeginPlay()
 	Super::BeginPlay();
 	DoorClosedRoll = GetActorRotation().Roll;
 	DoorOpenedRoll = DoorClosedRoll + 90.0f;
-	AddActorLocalOffset(FVector(0.01f, 0.0f, 0.0f));
 }
 
 void ADoor::Tick(float DeltaTime)
@@ -42,7 +41,7 @@ void ADoor::DoorOpen(float DeltaTime)
 	FRotator DoorRotation = GetActorRotation();
 	DoorRotation.Roll = DoorCurrentRoll;
 	SetActorRotation(DoorRotation);
-	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorOpenedRoll, 0.5f))
+	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorOpenedRoll, 0.05f))
 	{
 		bDoorOpening = false;
 	}
@@ -52,9 +51,9 @@ void ADoor::CloseDoor(float DeltaTime)
 {
 	DoorCurrentRoll = FMath::Lerp(DoorCurrentRoll, DoorClosedRoll, DeltaTime * DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
-	DoorRotation.Yaw = DoorCurrentRoll;
+	DoorRotation.Roll = DoorCurrentRoll;
 	SetActorRotation(DoorRotation);
-	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorClosedRoll, 0.5f))
+	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorClosedRoll, 0.05f))
 	{
 		bDoorClosing = false;
 	}

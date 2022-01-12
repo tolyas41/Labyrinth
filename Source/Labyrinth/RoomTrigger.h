@@ -15,15 +15,18 @@ class LABYRINTH_API ARoomTrigger : public ATriggerBox
 	GENERATED_BODY()
 	
 public:
-	ARoomTrigger();
+	//ARoomTrigger();
 	virtual void PostInitializeComponents() override;
 
 	UFUNCTION()
 	void OnOverlapBegin(class AActor* OverlappedActor, class AActor* OtherActor);
+	UFUNCTION()
+	void OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor);
 
 	//UPROPERTY(EditAnywhere)
 	//UStaticMeshComponent* StaticMesh;
 
+	// ** Doors set in blueprints for every room
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Doors")
 	TArray<ADoor*> Doors;
 
