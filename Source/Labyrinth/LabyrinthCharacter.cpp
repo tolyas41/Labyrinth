@@ -101,12 +101,19 @@ void ALabyrinthCharacter::MoveRight(float Value)
 	}
 }
 
-void ALabyrinthCharacter::OpenDoor()
+void ALabyrinthCharacter::OpenDoor_Implementation()
 {
 	if (DoorToOpen)
 	{
-		DoorToOpen->bDoorOpening = true;
+		DoorToOpen->OpenDoorFunc();
+		UE_LOG(LogTemp, Warning, TEXT("Do %s"), *GetName());
+
 	}
+	//if (DoorToOpen)
+	//{
+	//	DoorToOpen->bDoorOpening = true;
+	//}
+
 }
 
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -118,5 +125,11 @@ void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedCo
 void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	DoorToOpen = nullptr;
-	UE_LOG(LogTemp, Warning, TEXT("Overlap ends"));
 }
+
+//void ALabyrinthCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//
+//	DOREPLIFETIME(ALabyrinthCharacter, DoorToOpen);
+//}

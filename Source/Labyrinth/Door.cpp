@@ -27,7 +27,7 @@ void ADoor::Tick(float DeltaTime)
 
 	if (bDoorOpening)
 	{
-		OnRep_DoorOpening(true);
+		DoorOpen(DeltaTime);
 	}
 	if (bDoorClosing)
 	{
@@ -35,9 +35,9 @@ void ADoor::Tick(float DeltaTime)
 	}
 }
 
-void ADoor::OpenDoor(float DeltaTime)
+void ADoor::DoorOpen(float DeltaTime)
 {
-	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorOpenedYaw, DeltaTime * DoorOpenCloseSpeed);
+	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorOpenedYaw, DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
 	DoorRotation.Yaw = DoorCurrentYaw;
 	SetActorRotation(DoorRotation);
@@ -59,14 +59,19 @@ void ADoor::CloseDoor(float DeltaTime)
 	}
 }
 
-void ADoor::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//void ADoor::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//
+//	DOREPLIFETIME(ADoor, bDoorOpening);
+//}
 
-	DOREPLIFETIME(ADoor, bDoorOpening);
-}
+//void ADoor::OnRep_DoorOpening(bool b)
+//{
+//	OpenDoor(0.01f);
+//}
 
-void ADoor::OnRep_DoorOpening(bool b)
+void ADoor::OpenDoorFunc_Implementation()
 {
-	OpenDoor(0.01f);
+	bDoorOpening = true;
 }

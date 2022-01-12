@@ -27,20 +27,23 @@ public:
 
 	//UFUNCTION(NetMulticast, Unreliable)
 	UFUNCTION()
-	void OpenDoor(float DeltaTime);
+	void DoorOpen(float DeltaTime);
 	UFUNCTION()
 	void CloseDoor(float DeltaTime);
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpenCloseSpeed = 10.0f;
-	UPROPERTY(ReplicatedUsing = OnRep_DoorOpening)
+	//UPROPERTY(Replicated)
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
 
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	UFUNCTION(NetMulticast, reliable)
+	void OpenDoorFunc();
 
-	UFUNCTION()
-	void OnRep_DoorOpening(bool b);
+	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	//UFUNCTION()
+	//void OnRep_DoorOpening(bool b);
 
 private:
 	float DoorClosedYaw;

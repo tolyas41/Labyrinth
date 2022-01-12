@@ -30,7 +30,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* DoorOpenBoundsChecker;
 
+	//UPROPERTY(Replicated)
 	ADoor* DoorToOpen;
+
+	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -39,6 +42,7 @@ protected:
 	void MoveRight(float Value);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
+	UFUNCTION(Server, reliable)
 	void OpenDoor();
 
 	UFUNCTION()
