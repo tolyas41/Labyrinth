@@ -17,8 +17,8 @@ ADoor::ADoor()
 void ADoor::BeginPlay()
 {
 	Super::BeginPlay();
-	DoorClosedYaw = GetActorRotation().Yaw;
-	DoorOpenedYaw = DoorClosedYaw + 90.0f;
+	DoorClosedRoll = GetActorRotation().Roll;
+	DoorOpenedRoll = DoorClosedRoll + 90.0f;
 }
 
 void ADoor::Tick(float DeltaTime)
@@ -37,11 +37,11 @@ void ADoor::Tick(float DeltaTime)
 
 void ADoor::DoorOpen(float DeltaTime)
 {
-	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorOpenedYaw, DoorOpenCloseSpeed);
+	DoorCurrentRoll = FMath::Lerp(DoorCurrentRoll, DoorOpenedRoll, DeltaTime * DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
-	DoorRotation.Yaw = DoorCurrentYaw;
+	DoorRotation.Roll = DoorCurrentRoll;
 	SetActorRotation(DoorRotation);
-	if (FMath::IsNearlyEqual(DoorCurrentYaw, DoorOpenedYaw, 0.5f))
+	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorOpenedRoll, 0.5f))
 	{
 		bDoorOpening = false;
 	}
@@ -49,11 +49,11 @@ void ADoor::DoorOpen(float DeltaTime)
 
 void ADoor::CloseDoor(float DeltaTime)
 {
-	DoorCurrentYaw = FMath::Lerp(DoorCurrentYaw, DoorClosedYaw, DeltaTime * DoorOpenCloseSpeed);
+	DoorCurrentRoll = FMath::Lerp(DoorCurrentRoll, DoorClosedRoll, DeltaTime * DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
-	DoorRotation.Yaw = DoorCurrentYaw;
+	DoorRotation.Yaw = DoorCurrentRoll;
 	SetActorRotation(DoorRotation);
-	if (FMath::IsNearlyEqual(DoorCurrentYaw, DoorClosedYaw, 0.5f))
+	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorClosedRoll, 0.5f))
 	{
 		bDoorClosing = false;
 	}
@@ -71,7 +71,7 @@ void ADoor::CloseDoor(float DeltaTime)
 //	OpenDoor(0.01f);
 //}
 
-void ADoor::OpenDoorFunc_Implementation()
-{
-	bDoorOpening = true;
-}
+//void ADoor::OpenDoorFunc_Implementation()
+//{
+//	bDoorOpening = true;
+//}

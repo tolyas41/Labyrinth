@@ -105,21 +105,13 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 {
 	if (DoorToOpen)
 	{
-		DoorToOpen->OpenDoorFunc();
-		UE_LOG(LogTemp, Warning, TEXT("Do %s"), *GetName());
-
+		DoorToOpen->bDoorOpening = true;
 	}
-	//if (DoorToOpen)
-	//{
-	//	DoorToOpen->bDoorOpening = true;
-	//}
-
 }
 
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	DoorToOpen = Cast<ADoor>(OtherActor);
-	UE_LOG(LogTemp, Warning, TEXT("Overlap %s"), *(OtherActor->GetName()));
 }
 
 void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)

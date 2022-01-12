@@ -36,9 +36,8 @@ public:
 	//UPROPERTY(Replicated)
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
-
-	UFUNCTION(NetMulticast, reliable)
-	void OpenDoorFunc();
+	//UFUNCTION(NetMulticast, reliable)
+	//void OpenDoorFunc();
 
 	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -46,8 +45,8 @@ public:
 	//void OnRep_DoorOpening(bool b);
 
 private:
-	float DoorClosedYaw;
-	float DoorOpenedYaw;
-	float DoorCurrentYaw;
+	float DoorClosedRoll;
+	float DoorOpenedRoll;
+	float DoorCurrentRoll;
 
 };
