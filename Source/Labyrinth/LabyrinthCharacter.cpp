@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "LabyrinthCharacter.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -40,9 +39,6 @@ ALabyrinthCharacter::ALabyrinthCharacter()
 	//DoorOpenBoundsChecker->SetRelativeLocation(RootComponent->GetComponentLocation());
 	//DoorOpenBoundsChecker->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	//DoorOpenBoundsChecker->SetCollisionProfileName(UCollisionProfile::)
-
-	TriggerRoom = nullptr;
-	DoorToOpen = nullptr;
 }
 
 void ALabyrinthCharacter::BeginPlay()
@@ -51,6 +47,8 @@ void ALabyrinthCharacter::BeginPlay()
 	DoorOpenBoundsChecker->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	DoorOpenBoundsChecker->OnComponentBeginOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapBegin);
 	DoorOpenBoundsChecker->OnComponentEndOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapEnd);
+	TriggerRoom = nullptr;
+	DoorToOpen = nullptr;
 }
 
 void ALabyrinthCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -118,28 +116,18 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (DoorToOpen == nullptr)
+	if (Cast<ADoor>(OtherActor))
 	{
 		DoorToOpen = Cast<ADoor>(OtherActor);
-		if (DoorToOpen != nullptr)
-		UE_LOG(LogTemp, Warning, TEXT("Door Start %s"), *DoorToOpen->GetName());
 	}
-
-	//if (OtherActor->GetClass() == ARoomTrigger::StaticClass())
-	//{
-	//	TriggerRoom = Cast<ARoomTrigger>(OtherActor);
-	//	UE_LOG(LogTemp, Warning, TEXT("%s"), *TriggerRoom->GetName() );
-
-	//}
 }
 
 void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (DoorToOpen != nullptr)
-	UE_LOG(LogTemp, Warning, TEXT("Door Delete %s"), *DoorToOpen->GetName());
-	DoorToOpen = nullptr;
-	//if (OtherActor->StaticClass() == ARoomTrigger::StaticClass())
-	//TriggerRoom = nullptr;
+	if (Cast<ADoor>(OtherActor))
+	{
+		DoorToOpen = nullptr;
+	}
 }
 
 //void ALabyrinthCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
