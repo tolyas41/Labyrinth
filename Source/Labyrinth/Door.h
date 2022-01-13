@@ -7,6 +7,7 @@
 #include "Door.generated.h"
 
 class UStaticMeshComponent;
+class ARoomPathPoint;
 
 UCLASS()
 class LABYRINTH_API ADoor : public AActor
@@ -25,7 +26,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
 
-	//UFUNCTION(NetMulticast, Unreliable)
 	UFUNCTION()
 	void DoorOpen(float DeltaTime);
 	UFUNCTION()
@@ -33,16 +33,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpenCloseSpeed = 10.0f;
-	//UPROPERTY(Replicated)
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
-	//UFUNCTION(NetMulticast, reliable)
-	//void OpenDoorFunc();
 
-	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
-	//UFUNCTION()
-	//void OnRep_DoorOpening(bool b);
+	// ** Set in blueprints for every door instance (need to make AI go to room with open door)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rooms")
+	ARoomPathPoint* Room1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rooms")
+	ARoomPathPoint* Room2;
 
 private:
 	float DoorClosedRoll;
