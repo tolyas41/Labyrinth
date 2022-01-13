@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "LabyrinthGameMode.h"
 #include "RoomTrigger.h"
+#include "RoomPathPoint.h"
 
 ASeeker::ASeeker()
 {
@@ -17,6 +18,8 @@ void ASeeker::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Room1Loc = GetActorLocation();
+	Room2Loc = GetActorLocation();
 }
 
 void ASeeker::Tick(float DeltaTime)
@@ -41,6 +44,8 @@ void ASeeker::OpenRandomDoor()
 		{
 			TriggerRoom->Doors[i]->bDoorOpening = true;
 			TriggerRoom->Doors[i]->bDoorClosing = false;
+			Room1Loc = TriggerRoom->Doors[i]->Room1->GetActorLocation();
+			Room2Loc = TriggerRoom->Doors[i]->Room2->GetActorLocation();
 		}
 		else
 		{
