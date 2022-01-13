@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Seeker.generated.h"
 
+class ARoomTrigger;
+
 UCLASS()
 class LABYRINTH_API ASeeker : public ACharacter
 {
@@ -21,5 +23,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION()
+	void OpenRandomDoor();
+
+	ARoomTrigger* TriggerRoom;
 
 };

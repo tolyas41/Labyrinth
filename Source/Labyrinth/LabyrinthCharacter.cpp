@@ -8,8 +8,11 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Kismet/GameplayStatics.h"
+#include "LabyrinthGameMode.h"
 #include "Door.h"
 #include "RoomTrigger.h"
+#include "Seeker.h"
 
 ALabyrinthCharacter::ALabyrinthCharacter()
 {
@@ -49,6 +52,7 @@ void ALabyrinthCharacter::BeginPlay()
 	DoorOpenBoundsChecker->OnComponentEndOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapEnd);
 	TriggerRoom = nullptr;
 	DoorToOpen = nullptr;
+	Seeker = Cast<ASeeker>(UGameplayStatics::GetActorOfClass(GetWorld(), ASeeker::StaticClass()));
 }
 
 void ALabyrinthCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -112,6 +116,9 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 		DoorToOpen->bDoorOpening = true;
 		DoorToOpen->bDoorClosing = false;
 	}
+
+	//Opening a door in AI room
+	Seeker->OpenRandomDoor();
 }
 
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

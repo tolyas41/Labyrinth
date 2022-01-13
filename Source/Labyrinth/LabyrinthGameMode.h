@@ -6,13 +6,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "LabyrinthGameMode.generated.h"
 
-UCLASS(minimalapi)
-class ALabyrinthGameMode : public AGameModeBase
+UCLASS()
+class LABYRINTH_API ALabyrinthGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
 	ALabyrinthGameMode();
+
 };
 
 

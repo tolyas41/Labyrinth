@@ -8,6 +8,7 @@
 
 class ADoor;
 class ARoomTrigger;
+class ASeeker;
 
 UCLASS(config=Game)
 class ALabyrinthCharacter : public ACharacter
@@ -19,6 +20,7 @@ class ALabyrinthCharacter : public ACharacter
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
 public:
 	ALabyrinthCharacter();
 
@@ -34,7 +36,7 @@ public:
 	//UPROPERTY(Replicated)
 	ADoor* DoorToOpen;
 	ARoomTrigger* TriggerRoom;
-
+	ASeeker* Seeker;
 	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:

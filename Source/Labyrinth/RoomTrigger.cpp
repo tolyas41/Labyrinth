@@ -5,16 +5,13 @@
 #include "Door.h"
 #include "Components/StaticMeshComponent.h"
 #include "LabyrinthCharacter.h"
-
-//ARoomTrigger::ARoomTrigger()
-//{
-//}
+#include "Seeker.h"
 
 void ARoomTrigger::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	OnActorBeginOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapBegin);
-	OnActorEndOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapEnd);
+	//OnActorEndOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapEnd);
 }
 
 void ARoomTrigger::OnOverlapBegin(class AActor* OverlappedActor, class AActor* OtherActor)
@@ -23,18 +20,14 @@ void ARoomTrigger::OnOverlapBegin(class AActor* OverlappedActor, class AActor* O
 	if (Character)
 	{
 		Character->TriggerRoom = this;
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *Character->GetName());
-
+	}
+	ASeeker* Seeker = Cast<ASeeker>(OtherActor);
+	if (Seeker)
+	{
+		Seeker->TriggerRoom = this;
 	}
 }
 
-void ARoomTrigger::OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor)
-{
-	//ALabyrinthCharacter* Character = Cast<ALabyrinthCharacter>(OtherActor);
-	//if (Character)
-	//{
-	//	Character->TriggerRoom = nullptr;
-	//	UE_LOG(LogTemp, Warning, TEXT("%s"), *Character->GetName());
-
-	//}
-}
+//void ARoomTrigger::OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor)
+//{
+//}

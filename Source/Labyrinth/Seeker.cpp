@@ -2,6 +2,10 @@
 
 
 #include "Seeker.h"
+#include "Door.h"
+#include "Kismet/GameplayStatics.h"
+#include "LabyrinthGameMode.h"
+#include "RoomTrigger.h"
 
 ASeeker::ASeeker()
 {
@@ -12,7 +16,7 @@ ASeeker::ASeeker()
 void ASeeker::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 void ASeeker::Tick(float DeltaTime)
@@ -27,3 +31,21 @@ void ASeeker::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ASeeker::OpenRandomDoor()
+{
+	size_t OpenDoorID = FMath::RandRange(0, TriggerRoom->Doors.Num());
+
+	for (size_t i = 0; i < TriggerRoom->Doors.Num(); i++)
+	{
+		if (i == OpenDoorID)
+		{
+			TriggerRoom->Doors[i]->bDoorOpening = true;
+			TriggerRoom->Doors[i]->bDoorClosing = false;
+		}
+		else
+		{
+			TriggerRoom->Doors[i]->bDoorClosing = true;
+			TriggerRoom->Doors[i]->bDoorOpening = false;
+		}
+	}
+}
