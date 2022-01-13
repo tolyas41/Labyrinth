@@ -35,6 +35,8 @@ public:
 	float DoorOpenCloseSpeed = 10.0f;
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
+	bool bDoorOpen = false;
+	bool bDoorClose = true;
 
 	// ** Set in blueprints for every door instance (need to make AI go to room with open door)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rooms")

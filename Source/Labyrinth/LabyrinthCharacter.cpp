@@ -107,11 +107,12 @@ void ALabyrinthCharacter::MoveRight(float Value)
 
 void ALabyrinthCharacter::OpenDoor_Implementation()
 {
-	if (DoorToOpen)
+	if (DoorToOpen && DoorToOpen->bDoorClose)
 	{
 		for (ADoor* door : TriggerRoom->Doors)
 		{
 			door->bDoorClosing = true;
+			door->bDoorOpening = false;
 		}
 		DoorToOpen->bDoorOpening = true;
 		DoorToOpen->bDoorClosing = false;

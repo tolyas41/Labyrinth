@@ -44,6 +44,7 @@ void ADoor::DoorOpen(float DeltaTime)
 	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorOpenedRoll, 0.05f))
 	{
 		bDoorOpening = false;
+		bDoorOpen = true;
 	}
 }
 
@@ -56,6 +57,7 @@ void ADoor::CloseDoor(float DeltaTime)
 	if (FMath::IsNearlyEqual(DoorCurrentRoll, DoorClosedRoll, 0.05f))
 	{
 		bDoorClosing = false;
+		bDoorClose = true;
 	}
 }
 
