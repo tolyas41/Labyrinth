@@ -121,7 +121,10 @@ void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedCo
 	if (DoorToOpen == nullptr)
 	{
 		DoorToOpen = Cast<ADoor>(OtherActor);
+		if (DoorToOpen != nullptr)
+		UE_LOG(LogTemp, Warning, TEXT("Door Start %s"), *DoorToOpen->GetName());
 	}
+
 	//if (OtherActor->GetClass() == ARoomTrigger::StaticClass())
 	//{
 	//	TriggerRoom = Cast<ARoomTrigger>(OtherActor);
@@ -132,6 +135,8 @@ void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedCo
 
 void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (DoorToOpen != nullptr)
+	UE_LOG(LogTemp, Warning, TEXT("Door Delete %s"), *DoorToOpen->GetName());
 	DoorToOpen = nullptr;
 	//if (OtherActor->StaticClass() == ARoomTrigger::StaticClass())
 	//TriggerRoom = nullptr;
