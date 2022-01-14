@@ -39,9 +39,6 @@ ALabyrinthCharacter::ALabyrinthCharacter()
 
 	DoorOpenBoundsChecker = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorOpenBoundsChecker"));
 	DoorOpenBoundsChecker->SetupAttachment(RootComponent);
-	//DoorOpenBoundsChecker->SetRelativeLocation(RootComponent->GetComponentLocation());
-	//DoorOpenBoundsChecker->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	//DoorOpenBoundsChecker->SetCollisionProfileName(UCollisionProfile::)
 }
 
 void ALabyrinthCharacter::BeginPlay()
@@ -68,7 +65,6 @@ void ALabyrinthCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ALabyrinthCharacter::LookUpAtRate);
 
 	PlayerInputComponent->BindAction("OpenDoor", IE_Pressed, this, &ALabyrinthCharacter::OpenDoor);
-
 }
 
 void ALabyrinthCharacter::TurnAtRate(float Rate)
@@ -116,10 +112,21 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 		}
 		DoorToOpen->bDoorOpening = true;
 		DoorToOpen->bDoorClosing = false;
-	}
 
-	//Opening a door in AI room
-	Seeker->OpenRandomDoor();
+		//Open a door in AI room if DoorToOpen doesnt lead to AI room
+		bool bConnectedRooms = false;
+		for (ADoor* door : Seeker->TriggerRoom->Doors)
+		{
+			if (DoorToOpen == door)
+			{
+				bConnectedRooms = true;
+			}
+		}
+		if (!bConnectedRooms)
+		{
+			Seeker->OpenRandomDoor();
+		}
+	}
 }
 
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -137,10 +144,3 @@ void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp
 		DoorToOpen = nullptr;
 	}
 }
-
-//void ALabyrinthCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
-//{
-//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-//
-//	DOREPLIFETIME(ALabyrinthCharacter, DoorToOpen);
-//}

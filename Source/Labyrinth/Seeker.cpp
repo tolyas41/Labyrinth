@@ -18,8 +18,6 @@ void ASeeker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Room1Loc = GetActorLocation();
-	Room2Loc = GetActorLocation();
 }
 
 void ASeeker::Tick(float DeltaTime)
@@ -36,6 +34,7 @@ void ASeeker::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ASeeker::OpenRandomDoor()
 {
+	isGoingToRoom = true;
 	size_t OpenDoorID = FMath::RandRange(0, TriggerRoom->Doors.Num());
 
 	for (size_t i = 0; i < TriggerRoom->Doors.Num(); i++)

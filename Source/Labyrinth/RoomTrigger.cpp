@@ -3,7 +3,6 @@
 
 #include "RoomTrigger.h"
 #include "Door.h"
-#include "Components/StaticMeshComponent.h"
 #include "LabyrinthCharacter.h"
 #include "Seeker.h"
 
@@ -11,7 +10,6 @@ void ARoomTrigger::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	OnActorBeginOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapBegin);
-	//OnActorEndOverlap.AddDynamic(this, &ARoomTrigger::OnOverlapEnd);
 }
 
 void ARoomTrigger::OnOverlapBegin(class AActor* OverlappedActor, class AActor* OtherActor)
@@ -27,7 +25,3 @@ void ARoomTrigger::OnOverlapBegin(class AActor* OverlappedActor, class AActor* O
 		Seeker->TriggerRoom = this;
 	}
 }
-
-//void ARoomTrigger::OnOverlapEnd(class AActor* OverlappedActor, class AActor* OtherActor)
-//{
-//}

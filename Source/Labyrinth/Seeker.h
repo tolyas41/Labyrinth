@@ -30,6 +30,8 @@ public:
 	ARoomTrigger* TriggerRoom;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isGoingToRoom;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Room1Loc;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Room2Loc;

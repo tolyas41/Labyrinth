@@ -33,11 +33,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* DoorOpenBoundsChecker;
 
-	//UPROPERTY(Replicated)
 	ADoor* DoorToOpen;
 	ARoomTrigger* TriggerRoom;
 	ASeeker* Seeker;
-	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	virtual void BeginPlay() override;
