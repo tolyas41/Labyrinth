@@ -29,8 +29,11 @@ public:
 
 	ARoomTrigger* TriggerRoom;
 
+	//use in BT to prevent patrolling
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isGoingToRoom;
+
+	//Location of two rooms with one randomly opened door
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Room1Loc;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

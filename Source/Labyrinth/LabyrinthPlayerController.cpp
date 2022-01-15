@@ -16,7 +16,6 @@ void ALabyrinthPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetDoorTimer();
 }
 
 void ALabyrinthPlayerController::SetDoorTimer()

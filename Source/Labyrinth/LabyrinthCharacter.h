@@ -25,8 +25,6 @@ class ALabyrinthCharacter : public ACharacter
 public:
 	ALabyrinthCharacter();
 
-	//virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
 
@@ -38,15 +36,14 @@ public:
 
 	ADoor* DoorToOpen;
 	ADoor* RandomDoor;
-
 	ADoor* StartDoor;
 	ADoor* EndDoor;
-
 	ARoomTrigger* TriggerRoom;
 	ASeeker* Seeker;
-	//ALabyrinthGameMode* LabGameMode;
+
 	void OpenRandomDoor();
 	void ResetTimer();
+	//the only rpc server function needed
 	UFUNCTION(Server, reliable)
 	void OpenDoor();
 

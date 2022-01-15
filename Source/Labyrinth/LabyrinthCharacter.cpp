@@ -49,16 +49,19 @@ void ALabyrinthCharacter::BeginPlay()
 	DoorOpenBoundsChecker->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	DoorOpenBoundsChecker->OnComponentBeginOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapBegin);
 	DoorOpenBoundsChecker->OnComponentEndOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapEnd);
+
 	Seeker = Cast<ASeeker>(UGameplayStatics::GetActorOfClass(GetWorld(), ASeeker::StaticClass()));
-	//LabGameMode = Cast<ALabyrinthGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
 	TriggerRoom = nullptr;
 	DoorToOpen = nullptr;
 	RandomDoor = nullptr;
+
 	TArray<AActor*> StartDoorFinder;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "StartDoor", StartDoorFinder);
 	StartDoor = Cast<ADoor>(StartDoorFinder[0]);
 	StartDoor->bDoorOpening = true;
 	StartDoor->bDoorClosing = false;
+
 	TArray<AActor*> EndDoorFinder;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "EndDoor", EndDoorFinder);
 	EndDoor = Cast<ADoor>(EndDoorFinder[0]);
@@ -128,7 +131,7 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 		}
 		if (DoorToOpen == EndDoor)
 		{
-			//TODO WIN
+			//some win message to make you sure that you are winner
 			UE_LOG(LogTemp, Warning, TEXT("WIN"));
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("WIN"));
 		}

@@ -14,8 +14,6 @@ class LABYRINTH_API ALabyrinthGameMode : public AGameModeBase
 public:
 	ALabyrinthGameMode();
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//bool bFirstDoorOpened = false;
 };
 
 
