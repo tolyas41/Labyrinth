@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "LabyrinthCharacter.h"
+#include "LabyrinthPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -9,7 +10,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
-#include "LabyrinthGameMode.h"
 #include "Door.h"
 #include "RoomTrigger.h"
 #include "Seeker.h"
@@ -44,13 +44,23 @@ ALabyrinthCharacter::ALabyrinthCharacter()
 void ALabyrinthCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 	DoorOpenBoundsChecker->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	DoorOpenBoundsChecker->OnComponentBeginOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapBegin);
 	DoorOpenBoundsChecker->OnComponentEndOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapEnd);
+	Seeker = Cast<ASeeker>(UGameplayStatics::GetActorOfClass(GetWorld(), ASeeker::StaticClass()));
 	TriggerRoom = nullptr;
 	DoorToOpen = nullptr;
-	Seeker = Cast<ASeeker>(UGameplayStatics::GetActorOfClass(GetWorld(), ASeeker::StaticClass()));
+	RandomDoor = nullptr;
+	//GetWorldTimerManager().SetTimer(RandomDoorTimerHandle, this, &ALabyrinthCharacter::OpenRandomDoor, OpenRandomDoorCooldown, true);
+
 }
+
+//void ALabyrinthCharacter::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//
+//}
 
 void ALabyrinthCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -58,13 +68,13 @@ void ALabyrinthCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ALabyrinthCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ALabyrinthCharacter::MoveRight);
-
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("TurnRate", this, &ALabyrinthCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ALabyrinthCharacter::LookUpAtRate);
 
 	PlayerInputComponent->BindAction("OpenDoor", IE_Pressed, this, &ALabyrinthCharacter::OpenDoor);
+	PlayerInputComponent->BindAction("OpenDoor", IE_Released, this, &ALabyrinthCharacter::ResetTimer);
 }
 
 void ALabyrinthCharacter::TurnAtRate(float Rate)
@@ -103,8 +113,16 @@ void ALabyrinthCharacter::MoveRight(float Value)
 
 void ALabyrinthCharacter::OpenDoor_Implementation()
 {
+	if (RandomDoor)
+	{
+		DoorToOpen = RandomDoor;
+	}
 	if (DoorToOpen && DoorToOpen->bDoorClose)
 	{
+		//GetWorldTimerManager().SetTimer(RandomDoorTimerHandle, this, &ALabyrinthCharacter::OpenRandomDoor, OpenRandomDoorCooldown, true);
+		//TODO Reset timer
+		
+		
 		for (ADoor* door : TriggerRoom->Doors)
 		{
 			door->bDoorClosing = true;
@@ -129,6 +147,26 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 	}
 }
 
+void ALabyrinthCharacter::OpenRandomDoor()
+{
+	//not workin for second player
+	if (TriggerRoom)
+	{
+		size_t OpenRandomDoorID = FMath::RandRange(0, TriggerRoom->Doors.Num() - 1);
+		RandomDoor = TriggerRoom->Doors[OpenRandomDoorID];
+		OpenDoor();
+		RandomDoor = nullptr;
+	}
+}
+
+void ALabyrinthCharacter::ResetTimer()
+{
+	if (DoorToOpen)
+	{
+		Cast<ALabyrinthPlayerController>(GetController())->SetDoorTimer();
+	}
+}
+
 void ALabyrinthCharacter::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (Cast<ADoor>(OtherActor))
@@ -144,3 +182,4 @@ void ALabyrinthCharacter::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp
 		DoorToOpen = nullptr;
 	}
 }
+

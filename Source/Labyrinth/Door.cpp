@@ -60,20 +60,3 @@ void ADoor::CloseDoor(float DeltaTime)
 		bDoorClose = true;
 	}
 }
-
-//void ADoor::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
-//{
-//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-//
-//	DOREPLIFETIME(ADoor, bDoorOpening);
-//}
-
-//void ADoor::OnRep_DoorOpening(bool b)
-//{
-//	OpenDoor(0.01f);
-//}
-
-//void ADoor::OpenDoorFunc_Implementation()
-//{
-//	bDoorOpening = true;
-//}

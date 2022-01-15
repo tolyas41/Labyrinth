@@ -33,6 +33,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpenCloseSpeed = 10.0f;
+	UPROPERTY(EditAnywhere)
+	float DoorOpenCloseSpeed = 10.0f;
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
 	bool bDoorOpen = false;

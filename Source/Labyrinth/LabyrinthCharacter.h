@@ -24,6 +24,8 @@ class ALabyrinthCharacter : public ACharacter
 public:
 	ALabyrinthCharacter();
 
+	//virtual void Tick(float DeltaTime) override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
 
@@ -34,8 +36,18 @@ public:
 	UStaticMeshComponent* DoorOpenBoundsChecker;
 
 	ADoor* DoorToOpen;
+	ADoor* RandomDoor;
 	ARoomTrigger* TriggerRoom;
 	ASeeker* Seeker;
+	//FTimerHandle RandomDoorTimerHandle;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//float OpenRandomDoorCooldown = 30.0f;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	//UFUNCTION(Server, reliable)
+	void OpenRandomDoor();
+	void ResetTimer();
+	UFUNCTION(Server, reliable)
+	void OpenDoor();
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,14 +56,12 @@ protected:
 	void MoveRight(float Value);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-	UFUNCTION(Server, reliable)
-	void OpenDoor();
 
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
+	
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
