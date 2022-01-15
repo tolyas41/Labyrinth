@@ -33,12 +33,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpenCloseSpeed = 10.0f;
-	UPROPERTY(EditAnywhere)
-	float DoorOpenCloseSpeed = 10.0f;
 	bool bDoorOpening = false;
 	bool bDoorClosing = false;
 	bool bDoorOpen = false;
 	bool bDoorClose = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bStartDoor = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bEndDoor = false;
 
 	// ** Set in blueprints for every door instance (need to make AI go to room with open door)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rooms")

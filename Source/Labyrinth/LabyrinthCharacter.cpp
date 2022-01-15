@@ -117,12 +117,12 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 	{
 		DoorToOpen = RandomDoor;
 	}
-	if (DoorToOpen && DoorToOpen->bDoorClose)
+	if (DoorToOpen && DoorToOpen->bDoorClose && !DoorToOpen->bStartDoor)
 	{
-		//GetWorldTimerManager().SetTimer(RandomDoorTimerHandle, this, &ALabyrinthCharacter::OpenRandomDoor, OpenRandomDoorCooldown, true);
-		//TODO Reset timer
-		
-		
+		if (DoorToOpen->bEndDoor)
+		{
+			//TODO WIN
+		}
 		for (ADoor* door : TriggerRoom->Doors)
 		{
 			door->bDoorClosing = true;
@@ -149,7 +149,6 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 
 void ALabyrinthCharacter::OpenRandomDoor()
 {
-	//not workin for second player
 	if (TriggerRoom)
 	{
 		size_t OpenRandomDoorID = FMath::RandRange(0, TriggerRoom->Doors.Num() - 1);
