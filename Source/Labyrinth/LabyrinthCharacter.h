@@ -9,6 +9,7 @@
 class ADoor;
 class ARoomTrigger;
 class ASeeker;
+class ALabyrinthGameMode;
 
 UCLASS(config=Game)
 class ALabyrinthCharacter : public ACharacter
@@ -37,13 +38,13 @@ public:
 
 	ADoor* DoorToOpen;
 	ADoor* RandomDoor;
+
+	ADoor* StartDoor;
+	ADoor* EndDoor;
+
 	ARoomTrigger* TriggerRoom;
 	ASeeker* Seeker;
-	//FTimerHandle RandomDoorTimerHandle;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//float OpenRandomDoorCooldown = 30.0f;
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	//UFUNCTION(Server, reliable)
+	//ALabyrinthGameMode* LabGameMode;
 	void OpenRandomDoor();
 	void ResetTimer();
 	UFUNCTION(Server, reliable)

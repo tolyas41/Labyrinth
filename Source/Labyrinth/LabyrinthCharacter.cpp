@@ -2,6 +2,7 @@
 
 #include "LabyrinthCharacter.h"
 #include "LabyrinthPlayerController.h"
+//#include "LabyrinthGameMode.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -49,18 +50,19 @@ void ALabyrinthCharacter::BeginPlay()
 	DoorOpenBoundsChecker->OnComponentBeginOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapBegin);
 	DoorOpenBoundsChecker->OnComponentEndOverlap.AddDynamic(this, &ALabyrinthCharacter::OnOverlapEnd);
 	Seeker = Cast<ASeeker>(UGameplayStatics::GetActorOfClass(GetWorld(), ASeeker::StaticClass()));
+	//LabGameMode = Cast<ALabyrinthGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	TriggerRoom = nullptr;
 	DoorToOpen = nullptr;
 	RandomDoor = nullptr;
-	//GetWorldTimerManager().SetTimer(RandomDoorTimerHandle, this, &ALabyrinthCharacter::OpenRandomDoor, OpenRandomDoorCooldown, true);
-
+	TArray<AActor*> StartDoorFinder;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "StartDoor", StartDoorFinder);
+	StartDoor = Cast<ADoor>(StartDoorFinder[0]);
+	StartDoor->bDoorOpening = true;
+	StartDoor->bDoorClosing = false;
+	TArray<AActor*> EndDoorFinder;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "EndDoor", EndDoorFinder);
+	EndDoor = Cast<ADoor>(EndDoorFinder[0]);
 }
-
-//void ALabyrinthCharacter::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//
-//}
 
 void ALabyrinthCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -117,9 +119,14 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 	{
 		DoorToOpen = RandomDoor;
 	}
-	if (DoorToOpen && DoorToOpen->bDoorClose && !DoorToOpen->bStartDoor)
+	if (DoorToOpen && DoorToOpen->bDoorClose && DoorToOpen != StartDoor)
 	{
-		if (DoorToOpen->bEndDoor)
+		if (StartDoor->bDoorOpen)
+		{
+			StartDoor->bDoorClosing = true;
+			StartDoor->bDoorOpening = false;
+		}
+		if (DoorToOpen == EndDoor)
 		{
 			//TODO WIN
 		}
