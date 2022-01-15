@@ -129,6 +129,8 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 		if (DoorToOpen == EndDoor)
 		{
 			//TODO WIN
+			UE_LOG(LogTemp, Warning, TEXT("WIN"));
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("WIN"));
 		}
 		for (ADoor* door : TriggerRoom->Doors)
 		{

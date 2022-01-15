@@ -27,6 +27,8 @@ void ALabyrinthPlayerController::SetDoorTimer()
 void ALabyrinthPlayerController::OpenRandomDoor()
 {
 	LabPlayer = Cast<ALabyrinthCharacter>(GetPawn());
-
-	LabPlayer->OpenRandomDoor();
+	if (LabPlayer)
+	{
+		LabPlayer->OpenRandomDoor();
+	}
 }
