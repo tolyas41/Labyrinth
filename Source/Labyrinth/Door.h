@@ -31,12 +31,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCurveFloat* DoorTimelineFloatCurve;
 	FOnTimelineFloat UpdateFunctionFloat;
+	FOnTimelineEvent OnFinishedCallback;
 
-	//UPROPERTY(EditAnywhere)
-	//float DoorOpenCloseSpeed = 10.0f;
-	//bool bDoorOpening = false;
-	//bool bDoorClosing = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool bDoorOpen = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool bDoorClose = true;
 
 	// ** Set in blueprints for every door instance (need to make AI go to room with open door)
@@ -51,10 +50,7 @@ public:
 	void CloseDoor();
 	UFUNCTION()
 	void UpdateTimelineComp(float Output);
-
-//private:
-//	float DoorClosedRoll;
-//	float DoorOpenedRoll;
-//	float DoorCurrentRoll;
+	UFUNCTION()
+	void OnTimelineFinished();
 
 };

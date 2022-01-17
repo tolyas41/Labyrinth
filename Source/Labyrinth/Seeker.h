@@ -7,6 +7,7 @@
 #include "Seeker.generated.h"
 
 class ARoomTrigger;
+class ADoor;
 
 UCLASS()
 class LABYRINTH_API ASeeker : public ACharacter
@@ -28,6 +29,8 @@ public:
 	void OpenRandomDoor();
 
 	ARoomTrigger* TriggerRoom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ADoor* OpeningDoor;
 
 	//use in BT to prevent patrolling
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
