@@ -41,15 +41,13 @@ void ASeeker::OpenRandomDoor()
 	{
 		if (i == OpenDoorID)
 		{
-			TriggerRoom->Doors[i]->bDoorOpening = true;
-			TriggerRoom->Doors[i]->bDoorClosing = false;
+			TriggerRoom->Doors[i]->OpenDoor();
 			Room1Loc = TriggerRoom->Doors[i]->Room1->GetActorLocation();
 			Room2Loc = TriggerRoom->Doors[i]->Room2->GetActorLocation();
 		}
 		else
 		{
-			TriggerRoom->Doors[i]->bDoorClosing = true;
-			TriggerRoom->Doors[i]->bDoorOpening = false;
+			TriggerRoom->Doors[i]->CloseDoor();
 		}
 	}
 }

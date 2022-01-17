@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/TimelineComponent.h"
 #include "Door.generated.h"
 
 class UStaticMeshComponent;
 class ARoomPathPoint;
-class UTimelineComponent;
 
 UCLASS()
 class LABYRINTH_API ADoor : public AActor
@@ -28,14 +28,14 @@ public:
 	UStaticMeshComponent* StaticMesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UTimelineComponent* DoorTimelineComp;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCurveFloat* DoorTimelineFloatCurve;
 	FOnTimelineFloat UpdateFunctionFloat;
 
-	UPROPERTY(EditAnywhere)
-	float DoorOpenCloseSpeed = 10.0f;
-	bool bDoorOpening = false;
-	bool bDoorClosing = false;
+	//UPROPERTY(EditAnywhere)
+	//float DoorOpenCloseSpeed = 10.0f;
+	//bool bDoorOpening = false;
+	//bool bDoorClosing = false;
 	bool bDoorOpen = false;
 	bool bDoorClose = true;
 
@@ -46,15 +46,15 @@ public:
 	ARoomPathPoint* Room2;
 
 	UFUNCTION(NetMulticast, unreliable)
-	void DoorOpen(float DeltaTime);
+	void OpenDoor();
 	UFUNCTION(BlueprintCallable, NetMulticast, unreliable)
-	void CloseDoor(float DeltaTime);
+	void CloseDoor();
 	UFUNCTION()
 	void UpdateTimelineComp(float Output);
 
-private:
-	float DoorClosedRoll;
-	float DoorOpenedRoll;
-	float DoorCurrentRoll;
+//private:
+//	float DoorClosedRoll;
+//	float DoorOpenedRoll;
+//	float DoorCurrentRoll;
 
 };

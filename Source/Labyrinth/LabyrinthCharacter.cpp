@@ -59,8 +59,7 @@ void ALabyrinthCharacter::BeginPlay()
 	TArray<AActor*> StartDoorFinder;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "StartDoor", StartDoorFinder);
 	StartDoor = Cast<ADoor>(StartDoorFinder[0]);
-	StartDoor->bDoorOpening = true;
-	StartDoor->bDoorClosing = false;
+	StartDoor->OpenDoor();
 
 	TArray<AActor*> EndDoorFinder;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), "EndDoor", EndDoorFinder);
@@ -126,8 +125,7 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 	{
 		if (StartDoor->bDoorOpen)
 		{
-			StartDoor->bDoorClosing = true;
-			StartDoor->bDoorOpening = false;
+			StartDoor->CloseDoor();
 		}
 		if (DoorToOpen == EndDoor)
 		{
@@ -137,11 +135,9 @@ void ALabyrinthCharacter::OpenDoor_Implementation()
 		}
 		for (ADoor* door : TriggerRoom->Doors)
 		{
-			door->bDoorClosing = true;
-			door->bDoorOpening = false;
+			door->CloseDoor();
 		}
-		DoorToOpen->bDoorOpening = true;
-		DoorToOpen->bDoorClosing = false;
+		DoorToOpen->OpenDoor();
 
 		//Open a door in AI room if DoorToOpen doesnt lead to AI room
 		bool bConnectedRooms = false;
