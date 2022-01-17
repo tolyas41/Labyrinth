@@ -4,6 +4,7 @@
 #include "Door.h"
 #include "Components/StaticMeshComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Components/TimelineComponent.h"
 
 ADoor::ADoor()
 {
@@ -11,7 +12,7 @@ ADoor::ADoor()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Mesh"));
 	RootComponent = StaticMesh;
-
+	DoorTimelineComp = CreateDefaultSubobject<UTimelineComponent>(TEXT("DoorTimelineComp"));
 }
 
 void ADoor::BeginPlay()
@@ -35,7 +36,7 @@ void ADoor::Tick(float DeltaTime)
 	}
 }
 
-void ADoor::DoorOpen(float DeltaTime)
+void ADoor::DoorOpen_Implementation(float DeltaTime)
 {
 	DoorCurrentRoll = FMath::Lerp(DoorCurrentRoll, DoorOpenedRoll, DeltaTime * DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
@@ -48,7 +49,7 @@ void ADoor::DoorOpen(float DeltaTime)
 	}
 }
 
-void ADoor::CloseDoor(float DeltaTime)
+void ADoor::CloseDoor_Implementation(float DeltaTime)
 {
 	DoorCurrentRoll = FMath::Lerp(DoorCurrentRoll, DoorClosedRoll, DeltaTime * DoorOpenCloseSpeed);
 	FRotator DoorRotation = GetActorRotation();
@@ -59,4 +60,10 @@ void ADoor::CloseDoor(float DeltaTime)
 		bDoorClosing = false;
 		bDoorClose = true;
 	}
+}
+
+void ADoor::UpdateTimelineComp(float Output)
+{
+	FRotator DoorNewRotation = FRotator(0.0f, Output, 0.f);
+	StaticMesh->SetRelativeRotation(DoorNewRotation);
 }

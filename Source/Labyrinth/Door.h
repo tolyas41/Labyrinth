@@ -8,6 +8,7 @@
 
 class UStaticMeshComponent;
 class ARoomPathPoint;
+class UTimelineComponent;
 
 UCLASS()
 class LABYRINTH_API ADoor : public AActor
@@ -25,11 +26,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
-
-	UFUNCTION()
-	void DoorOpen(float DeltaTime);
-	UFUNCTION(BlueprintCallable)
-	void CloseDoor(float DeltaTime);
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UTimelineComponent* DoorTimelineComp;
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* DoorTimelineFloatCurve;
+	FOnTimelineFloat UpdateFunctionFloat;
 
 	UPROPERTY(EditAnywhere)
 	float DoorOpenCloseSpeed = 10.0f;
@@ -43,6 +44,13 @@ public:
 	ARoomPathPoint* Room1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rooms")
 	ARoomPathPoint* Room2;
+
+	UFUNCTION(NetMulticast, unreliable)
+	void DoorOpen(float DeltaTime);
+	UFUNCTION(BlueprintCallable, NetMulticast, unreliable)
+	void CloseDoor(float DeltaTime);
+	UFUNCTION()
+	void UpdateTimelineComp(float Output);
 
 private:
 	float DoorClosedRoll;
